@@ -1,151 +1,208 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta name="description" content="Opportunity Cost Analyzer helps you understand the value and opportunity cost of a purchase.">
-  <title>Opportunity Cost Analyzer — Think Before You Buy</title>
+  <meta
+    name="description"
+    content="Opportunity Cost Analyzer helps you understand the opportunity cost of a purchase."
+  >
+  <title>Opportunity Cost Analyzer</title>
+
   <link rel="stylesheet" href="styles.css">
 </head>
+
 <body>
+
   <header class="site-header">
-    <a class="brand" href="#top" aria-label="Opportunity Cost Analyzer home">
-      <span class="brand-mark">OC</span>
-      <span>Opportunity Cost Analyzer</span>
+    <a href="#top" class="brand">
+      <span>OC</span>
+      <strong>Opportunity Cost Analyzer</strong>
     </a>
-    <nav class="nav">
-      <a href="#why">Why use it?</a>
-      <button id="themeToggle" class="icon-btn" type="button" aria-label="Toggle theme">☾</button>
-    </nav>
+
+    <button id="themeToggle" type="button" aria-label="Toggle dark mode">
+      ☾
+    </button>
   </header>
 
   <main id="top">
-    <section class="hero container">
-      <div class="hero-copy">
-        <span class="eyebrow">SMARTER PURCHASES • SIMPLE EXPLANATIONS</span>
-        <h1>Think Before You Buy.</h1>
-        <p class="hero-subtitle">Every purchase has an opportunity cost. See what your money could do before you spend it.</p>
-        <button class="primary-btn" data-scroll="#analyzer">Analyze a Purchase <span>→</span></button>
-      </div>
-      <div class="hero-card" aria-hidden="true">
-        <div class="hero-card-top"><span>Purchase</span><span class="pill">Example</span></div>
-        <h3>Gaming Laptop</h3>
-        <div class="mini-row"><span>Price</span><strong>$1,000</strong></div>
-        <div class="mini-row"><span>Alternative</span><strong>Save for education</strong></div>
-        <div class="mini-divider"></div>
-        <p>“The real cost includes what you give up by choosing this purchase.”</p>
-      </div>
+
+    <section class="hero">
+      <h1>Think Before You Buy</h1>
+
+      <p>
+        Enter a product name and let AI analyze its potential
+        benefits, risks, and opportunity cost.
+      </p>
+
+      <button
+        type="button"
+        data-scroll="#analyzer"
+      >
+        Start Analyzing
+      </button>
     </section>
 
-    <section id="why" class="section container">
+
+    <section id="analyzer" class="analyzer">
+
       <div class="section-heading">
-        <span class="eyebrow">WHY USE OPPORTUNITY COST ANALYZER?</span>
-        <h2>See the decision from more than one angle.</h2>
-        <p>Turn a quick buying decision into a clear, thoughtful comparison.</p>
-      </div>
-      <div class="feature-grid">
-        <article class="feature-card"><div class="feature-icon">◌</div><h3>See the Bigger Picture</h3><p>Look beyond the price and consider benefits, downsides, and how often you will use the product.</p></article>
-        <article class="feature-card"><div class="feature-icon">↔</div><h3>Understand Opportunity Cost</h3><p>Identify what you give up when the same money could be used somewhere else.</p></article>
-        <article class="feature-card"><div class="feature-icon">◇</div><h3>Compare Alternatives</h3><p>Put your intended purchase next to the alternative use of your money.</p></article>
-        <article class="feature-card"><div class="feature-icon">✓</div><h3>Make More Thoughtful Decisions</h3><p>Get a neutral explanation instead of a simplistic buy-or-don't-buy command.</p></article>
-      </div>
-    </section>
+        <h2>Analyze a Product</h2>
 
-    <section id="analyzer" class="section analyzer-section">
-      <div class="container">
-        <div class="section-heading">
-          <span class="eyebrow">PURCHASE ANALYZER</span>
-          <h2>Should I Buy This?</h2>
-          <p>Enter what you know. The analysis will work with your information and clearly label assumptions.</p>
+        <p>
+          You only need to enter the product name.
+        </p>
+      </div>
+
+
+      <form id="purchaseForm">
+
+        <div class="form-group">
+
+          <label for="productName">
+            Product Name
+          </label>
+
+          <input
+            id="productName"
+            name="productName"
+            type="text"
+            placeholder="Example: iPhone 17"
+            autocomplete="off"
+            required
+          >
+
+          <p
+            id="productError"
+            class="error"
+            aria-live="polite"
+          ></p>
+
         </div>
 
-        <form id="purchaseForm" class="form-card" novalidate>
-          <div class="form-grid">
-            <label class="field">
-              <span>Product Name <b>*</b></span>
-              <input id="productName" name="productName" type="text" maxlength="100" placeholder="e.g. Gaming Laptop" autocomplete="off">
-              <small id="productError" class="error" role="alert"></small>
-            </label>
 
-            <label class="field">
-              <span>Purchase Price <b>*</b></span>
-              <div class="price-input"><span>$</span><input id="price" name="price" type="number" min="0.01" step="0.01" placeholder="500"></div>
-            </label>
+        <p
+          id="formError"
+          class="error"
+          aria-live="polite"
+        ></p>
 
-            <label class="field full">
-              <span>Expected Benefit <b>*</b></span>
-              <textarea id="benefit" name="benefit" rows="4" maxlength="1000" placeholder="What benefit do you expect after buying it?"></textarea>
-            </label>
 
-            <label class="field full">
-              <span>Potential Loss <b>*</b></span>
-              <textarea id="loss" name="loss" rows="4" maxlength="1000" placeholder="What could go wrong or what might you lose?"></textarea>
-            </label>
+        <button type="submit">
+          Analyze with AI
+        </button>
 
-            <label class="field full">
-              <span>Alternative Use of Money <b>*</b></span>
-              <textarea id="alternative" name="alternative" rows="4" maxlength="1000" placeholder="e.g. Save the money, buy another product, use it for education..."></textarea>
-            </label>
+      </form>
 
-            <label class="field full">
-              <span>Expected Usage <b>*</b></span>
-              <select id="usage" name="usage">
-                <option value="">Choose usage frequency</option>
-                <option>Every day</option>
-                <option>Several times a week</option>
-                <option>Once a week</option>
-                <option>Rarely</option>
-              </select>
-            </label>
-          </div>
-          <div id="formError" class="form-error" role="alert"></div>
-          <button class="primary-btn wide" type="submit">Analyze Purchase <span>→</span></button>
-          <p class="privacy-note">Your entries are analyzed locally by default. This demo does not send your data anywhere.</p>
-        </form>
-
-        <section id="results" class="results" hidden aria-live="polite">
-          <div class="results-header">
-            <div><span class="eyebrow">ANALYSIS RESULT</span><h2 id="resultTitle">Your Purchase</h2></div>
-            <button id="anotherBtn" class="secondary-btn" type="button">Analyze Another Purchase</button>
-          </div>
-
-          <div class="result-grid">
-            <article class="result-card"><span class="card-label">Product Overview</span><div id="overview"></div></article>
-            <article class="result-card"><span class="card-label">Expected Benefits</span><div id="benefitsResult"></div></article>
-            <article class="result-card"><span class="card-label">Potential Losses</span><div id="lossesResult"></div></article>
-            <article class="result-card highlight"><span class="card-label">Opportunity Cost</span><div id="opportunity"></div></article>
-            <article class="result-card"><span class="card-label">Purchase Value</span><div id="value"></div></article>
-            <article class="result-card"><span class="card-label">About This Product</span><div id="aboutProduct"></div></article>
-          </div>
-
-          <article class="calculator-card">
-            <div>
-              <span class="card-label">Opportunity Cost Calculator</span>
-              <h3>Compare the purchase with your alternative.</h3>
-              <p>Opportunity cost is the value of the best alternative you give up when you make a choice.</p>
-            </div>
-            <div class="calc-grid">
-              <div><span>Product price</span><strong id="calcPrice">$0</strong></div>
-              <div><span>Alternative</span><strong id="calcAlternative">—</strong></div>
-              <div><span>Illustrative future value</span><strong id="calcFuture">$0</strong></div>
-            </div>
-            <p id="calcNote" class="calc-note"></p>
-          </article>
-
-          <article class="summary-card">
-            <span class="card-label">Summary</span>
-            <div id="summary"></div>
-          </article>
-        </section>
-      </div>
     </section>
+
+
+    <section
+      id="results"
+      class="results"
+      hidden
+    >
+
+      <div class="section-heading">
+        <h2 id="resultTitle">
+          Product Analysis
+        </h2>
+
+        <p>
+          AI analysis
+        </p>
+      </div>
+
+
+      <article class="result-card">
+
+        <h3>Overview</h3>
+
+        <div id="overview"></div>
+
+      </article>
+
+
+      <article class="result-card">
+
+        <h3>Potential Benefits</h3>
+
+        <div id="benefitsResult"></div>
+
+      </article>
+
+
+      <article class="result-card">
+
+        <h3>Potential Risks & Losses</h3>
+
+        <div id="lossesResult"></div>
+
+      </article>
+
+
+      <article class="result-card">
+
+        <h3>Opportunity Cost</h3>
+
+        <div id="opportunity"></div>
+
+      </article>
+
+
+      <article class="result-card">
+
+        <h3>Value Analysis</h3>
+
+        <div id="value"></div>
+
+      </article>
+
+
+      <article class="result-card">
+
+        <h3>About the Product</h3>
+
+        <div id="aboutProduct"></div>
+
+      </article>
+
+
+      <article class="result-card">
+
+        <h3>Summary</h3>
+
+        <div id="summary"></div>
+
+      </article>
+
+
+      <button
+        id="anotherBtn"
+        type="button"
+      >
+        Analyze Another Product
+      </button>
+
+    </section>
+
   </main>
 
-  <footer class="footer container">
-    <span>© 2026 Opportunity Cost Analyzer</span>
-    <span>Educational decision-support tool — not financial advice.</span>
+
+  <footer class="site-footer">
+
+    <p>
+      Opportunity Cost Analyzer
+    </p>
+
+    <p>
+      Make informed purchasing decisions.
+    </p>
+
   </footer>
 
+
   <script src="app.js"></script>
+
 </body>
-</html>
+          </html>
