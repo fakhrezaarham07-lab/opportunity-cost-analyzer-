@@ -3,10 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <meta
-    name="description"
-    content="Opportunity Cost Analyzer helps you understand the opportunity cost of a purchase."
-  >
+
   <title>Opportunity Cost Analyzer</title>
 
   <link rel="stylesheet" href="styles.css">
@@ -14,49 +11,47 @@
 
 <body>
 
-  <header class="site-header">
-    <a href="#top" class="brand">
-      <span>OC</span>
-      <strong>Opportunity Cost Analyzer</strong>
-    </a>
+  <!-- HEADER -->
+  <header>
+    <div class="container">
 
-    <button id="themeToggle" type="button" aria-label="Toggle dark mode">
-      ☾
-    </button>
+      <h1>Opportunity Cost Analyzer</h1>
+
+      <button id="themeToggle" type="button">
+        🌙 / ☀️
+      </button>
+
+    </div>
   </header>
 
-  <main id="top">
 
-    <section class="hero">
-      <h1>Think Before You Buy</h1>
+  <!-- HERO -->
+  <section class="hero">
+
+    <div class="container">
+
+      <h2>Make Smarter Purchasing Decisions</h2>
 
       <p>
-        Enter a product name and let AI analyze its potential
-        benefits, risks, and opportunity cost.
+        Enter a product name and let AI analyze its benefits,
+        risks, opportunity cost, and overall value.
       </p>
 
-      <button
-        type="button"
-        data-scroll="#analyzer"
-      >
-        Start Analyzing
-      </button>
-    </section>
+    </div>
+
+  </section>
 
 
-    <section id="analyzer" class="analyzer">
+  <!-- ANALYZER -->
+  <section id="analyzer">
 
-      <div class="section-heading">
-        <h2>Analyze a Product</h2>
+    <div class="container">
 
-        <p>
-          You only need to enter the product name.
-        </p>
-      </div>
-
+      <h2>AI Product Analyzer</h2>
 
       <form id="purchaseForm">
 
+        <!-- PRODUCT NAME -->
         <div class="form-group">
 
           <label for="productName">
@@ -64,119 +59,166 @@
           </label>
 
           <input
-            id="productName"
-            name="productName"
             type="text"
+            id="productName"
             placeholder="Example: iPhone 17"
             autocomplete="off"
-            required
           >
 
-          <p
-            id="productError"
-            class="error"
-            aria-live="polite"
-          ></p>
+          <small id="productError"></small>
 
         </div>
 
 
-        <p
-          id="formError"
-          class="error"
-          aria-live="polite"
-        ></p>
+        <!-- LANGUAGE -->
+        <div class="form-group">
+
+          <label for="language">
+            Language / Bahasa
+          </label>
+
+          <select id="language">
+
+            <option value="id">
+              🇮🇩 Bahasa Indonesia
+            </option>
+
+            <option value="en">
+              🇬🇧 English
+            </option>
+
+            <option value="es">
+              🇪🇸 Español
+            </option>
+
+            <option value="fr">
+              🇫🇷 Français
+            </option>
+
+            <option value="de">
+              🇩🇪 Deutsch
+            </option>
+
+            <option value="ja">
+              🇯🇵 日本語
+            </option>
+
+          </select>
+
+        </div>
 
 
+        <!-- ERROR -->
+        <p id="formError"></p>
+
+
+        <!-- BUTTON -->
         <button type="submit">
           Analyze with AI
         </button>
 
       </form>
 
-    </section>
+    </div>
+
+  </section>
 
 
-    <section
-      id="results"
-      class="results"
-      hidden
-    >
+  <!-- RESULTS -->
+  <section id="results" style="display: none;">
 
-      <div class="section-heading">
-        <h2 id="resultTitle">
-          Product Analysis
-        </h2>
+    <div class="container">
 
-        <p>
-          AI analysis
-        </p>
-      </div>
+      <h2 id="resultTitle">
+        AI Analysis
+      </h2>
 
 
-      <article class="result-card">
+      <!-- OVERVIEW -->
+      <div class="result-card">
 
         <h3>Overview</h3>
 
-        <div id="overview"></div>
+        <p id="overview">
+          -
+        </p>
 
-      </article>
-
-
-      <article class="result-card">
-
-        <h3>Potential Benefits</h3>
-
-        <div id="benefitsResult"></div>
-
-      </article>
+      </div>
 
 
-      <article class="result-card">
+      <!-- BENEFITS -->
+      <div class="result-card">
 
-        <h3>Potential Risks & Losses</h3>
+        <h3>Benefits</h3>
 
-        <div id="lossesResult"></div>
+        <p id="benefitsResult">
+          -
+        </p>
 
-      </article>
+      </div>
 
 
-      <article class="result-card">
+      <!-- RISKS -->
+      <div class="result-card">
+
+        <h3>Risks / Losses</h3>
+
+        <p id="lossesResult">
+          -
+        </p>
+
+      </div>
+
+
+      <!-- OPPORTUNITY COST -->
+      <div class="result-card">
 
         <h3>Opportunity Cost</h3>
 
-        <div id="opportunity"></div>
+        <p id="opportunity">
+          -
+        </p>
 
-      </article>
-
-
-      <article class="result-card">
-
-        <h3>Value Analysis</h3>
-
-        <div id="value"></div>
-
-      </article>
+      </div>
 
 
-      <article class="result-card">
+      <!-- VALUE -->
+      <div class="result-card">
 
-        <h3>About the Product</h3>
+        <h3>Product Value</h3>
 
-        <div id="aboutProduct"></div>
+        <p id="value">
+          -
+        </p>
 
-      </article>
-
-
-      <article class="result-card">
-
-        <h3>Summary</h3>
-
-        <div id="summary"></div>
-
-      </article>
+      </div>
 
 
+      <!-- PRODUCT INFORMATION -->
+      <div class="result-card">
+
+        <h3>About This Product</h3>
+
+        <p id="aboutProduct">
+          -
+        </p>
+
+      </div>
+
+
+      <!-- SUMMARY -->
+      <div class="result-card">
+
+        <h3>AI Summary</h3>
+
+        <p id="summary">
+          -
+        </p>
+
+      </div>
+
+
+      <!-- ANALYZE ANOTHER -->
       <button
         id="anotherBtn"
         type="button"
@@ -184,25 +226,31 @@
         Analyze Another Product
       </button>
 
-    </section>
+    </div>
 
-  </main>
+  </section>
 
 
-  <footer class="site-footer">
+  <!-- FOOTER -->
+  <footer>
 
-    <p>
-      Opportunity Cost Analyzer
-    </p>
+    <div class="container">
 
-    <p>
-      Make informed purchasing decisions.
-    </p>
+      <p>
+        Opportunity Cost Analyzer
+      </p>
+
+      <p>
+        Make informed purchasing decisions.
+      </p>
+
+    </div>
 
   </footer>
 
 
+  <!-- JAVASCRIPT -->
   <script src="app.js"></script>
 
 </body>
-          </html>
+  </html>
