@@ -1,148 +1,249 @@
-export default async function handler(req, res) {
-  const allowedOrigin =
-    "https://fakhrezaarham07-lab.github.io";
+const AI_API_URL =
+  "https://GANTI-DENGAN-URL-VERCEL-KAMU.vercel.app/api/analyze";
 
-  res.setHeader("Access-Control-Allow-Origin", allowedOrigin);
-  res.setHeader("Access-Control-Allow-Methods", "POST, OPTIONS");
-  res.setHeader("Access-Control-Allow-Headers", "Content-Type");
+const $ = (id) => document.getElementById(id);
 
-  if (req.method === "OPTIONS") {
-    return res.status(200).end();
-  }
+// =========================
+// THEME
+// =========================
 
-  if (req.method !== "POST") {
-    return res.status(405).json({
-      error: "Method not allowed"
-    });
-  }
+const themeToggle = $("themeToggle");
 
-  try {
-    const { product, language } = req.body || {};
+if (themeToggle) {
+  themeToggle.addEventListener("click", () => {
+    document.body.classList.toggle("dark");
 
-    if (!product || product.trim().length < 2) {
-      return res.status(400).json({
-        error: "Nama produk tidak boleh kosong."
-      });
+    const isDark =
+      document.body.classList.contains("dark");
+
+    localStorage.setItem(
+      "theme",
+      isDark ? "dark" : "light"
+    );
+  });
+}
+
+if (
+  localStorage.getItem("theme") === "dark"
+) {
+  document.body.classList.add("dark");
+}
+
+
+// =========================
+// ANALYZER
+// =========================
+
+const form = $("purchaseForm");
+
+if (form) {
+  form.addEventListener("submit", async (event) => {
+    event.preventDefault();
+
+    const productInput = $("productName");
+    const languageInput = $("language");
+
+    const product = productInput.value.trim();
+    const language =
+      languageInput?.value || "id";
+
+    const errorBox = $("formError");
+    const productError = $("productError");
+
+    if (errorBox) {
+      errorBox.textContent = "";
     }
 
-    const languages = {
-      id: "Bahasa Indonesia",
-      en: "English",
-      es: "Español",
-      fr: "Français",
-      de: "Deutsch",
-      ja: "日本語"
-    };
+    if (productError) {
+      productError.textContent = "";
+    }
 
-    const selectedLanguage =
-      languages[language] || "Bahasa Indonesia";
-
-    const instructions = `
-You are an AI assistant for an Opportunity Cost Analyzer.
-
-Analyze the product based only on the product name provided by the user.
-
-The answer must be written completely in ${selectedLanguage}.
-
-Return ONLY valid JSON.
-
-The JSON must contain exactly these fields:
-- overview
-- benefits
-- risks
-- opportunityCost
-- value
-- productInfo
-- summary
-
-Important:
-- Do not invent exact current prices.
-- Do not invent specifications if you are uncertain.
-- If the product name is ambiguous, clearly state the assumption.
-- Explain opportunity cost in a simple and understandable way.
-- Be useful for ordinary consumers.
-- Keep the answer concise but informative.
-`;
-
-    const response = await fetch(
-      "https://api.openai.com/v1/responses",
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          "Authorization":
-            `Bearer ${process.env.OPENAI_API_KEY}`
-        },
-        body: JSON.stringify({
-          model: process.env.OPENAI_MODEL || "gpt-5.6-luna",
-          instructions,
-          input: `Analyze this product: ${product}`,
-          text: {
-            format: {
-              type: "json_schema",
-              name: "product_analysis",
-              strict: true,
-              schema: {
-                type: "object",
-                properties: {
-                  overview: { type: "string" },
-                  benefits: { type: "string" },
-                  risks: { type: "string" },
-                  opportunityCost: { type: "string" },
-                  value: { type: "string" },
-                  productInfo: { type: "string" },
-                  summary: { type: "string" }
-                },
-                required: [
-                  "overview",
-                  "benefits",
-                  "risks",
-                  "opportunityCost",
-                  "value",
-                  "productInfo",
-                  "summary"
-                ],
-                additionalProperties: false
-              }
-            }
-          }
-        })
+    if (!product) {
+      if (productError) {
+        productError.textContent =
+          "Masukkan nama produk terlebih dahulu.";
       }
+
+      return;
+    }
+
+    // =========================
+    // LOADING
+    // =========================
+
+    const results = $("results");
+
+    if (results) {
+      results.style.display = "block";
+    }
+
+    setText(
+      "resultTitle",
+      "AI sedang menganalisis..."
     );
 
-    const data = await response.json();
+    setText(
+      "overview",
+      "Mohon tunggu..."
+    );
 
-    if (!response.ok) {
-      console.error(data);
+    setText(
+      "benefitsResult",
+      "AI sedang mencari manfaat produk..."
+    );
 
-      return res.status(response.status).json({
-        error: "AI request failed."
-      });
+    setText(
+      "lossesResult",
+      "AI sedang menganalisis risiko..."
+    );
+
+    setText(
+      "opportunity",
+      "AI sedang menghitung opportunity cost..."
+    );
+
+    setText(
+      "value",
+      "AI sedang menilai nilai produk..."
+    );
+
+    setText(
+      "aboutProduct",
+      "AI sedang menjelaskan produk..."
+    );
+
+    setText(
+      "summary",
+      "AI sedang membuat kesimpulan..."
+    );
+
+    try {
+      const response = await fetch(
+        AI_API_URL,
+        {
+          method: "POST",
+
+          headers: {
+            "Content-Type": "application/json"
+          },
+
+          body: JSON.stringify({
+            product,
+            language
+          })
+        }
+      );
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(
+          data.error ||
+          "Gagal mendapatkan jawaban AI."
+        );
+      }
+
+      // =========================
+      // DISPLAY RESULT
+      // =========================
+
+      setText(
+        "resultTitle",
+        `AI Analysis: ${product}`
+      );
+
+      setText(
+        "overview",
+        data.overview
+      );
+
+      setText(
+        "benefitsResult",
+        data.benefits
+      );
+
+      setText(
+        "lossesResult",
+        data.risks
+      );
+
+      setText(
+        "opportunity",
+        data.opportunityCost
+      );
+
+      setText(
+        "value",
+        data.value
+      );
+
+      setText(
+        "aboutProduct",
+        data.productInfo
+      );
+
+      setText(
+        "summary",
+        data.summary
+      );
+
+      if (results) {
+        results.scrollIntoView({
+          behavior: "smooth"
+        });
+      }
+
+    } catch (error) {
+
+      console.error(error);
+
+      if (errorBox) {
+        errorBox.textContent =
+          "Gagal terhubung ke AI. Periksa URL backend dan konfigurasi API key.";
+      }
     }
+  });
+}
 
-    const outputText =
-      data.output_text ||
-      data.output
-        ?.flatMap(item => item.content || [])
-        ?.filter(item => item.type === "output_text")
-        ?.map(item => item.text)
-        ?.join("\n");
 
-    if (!outputText) {
-      return res.status(500).json({
-        error: "AI tidak memberikan jawaban."
-      });
-    }
+// =========================
+// HELPER
+// =========================
 
-    const result = JSON.parse(outputText);
+function setText(id, text) {
+  const element = $(id);
 
-    return res.status(200).json(result);
-
-  } catch (error) {
-    console.error(error);
-
-    return res.status(500).json({
-      error: "Terjadi kesalahan pada server."
-    });
+  if (element) {
+    element.textContent =
+      text || "Tidak ada informasi.";
   }
-          }
+}
+
+
+// =========================
+// ANOTHER ANALYSIS
+// =========================
+
+const anotherBtn = $("anotherBtn");
+
+if (anotherBtn) {
+  anotherBtn.addEventListener(
+    "click",
+    () => {
+
+      const analyzer = $("analyzer");
+
+      if (analyzer) {
+        analyzer.scrollIntoView({
+          behavior: "smooth"
+        });
+      }
+
+      const input = $("productName");
+
+      if (input) {
+        input.focus();
+      }
+    }
+  );
+            }
